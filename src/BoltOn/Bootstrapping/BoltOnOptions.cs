@@ -18,10 +18,10 @@ namespace BoltOn.Bootstrapping
 		internal bool IsTightened { get; set; }
 		internal bool IsAppCleaned { get; set; }
 		internal HashSet<Assembly> RegisteredAssemblies { get; } = new HashSet<Assembly>();
-		public IServiceCollection ServiceCollection { get; }
         internal HashSet<Type> InterceptorTypes { get; set; } = new HashSet<Type>();
         internal Type RecentlyAddedInterceptor { get; set; }
         internal InterceptorOptions InterceptorOptions { get; }
+		public IServiceCollection ServiceCollection { get; }
 
 		public BoltOnOptions(IServiceCollection serviceCollection)
 		{

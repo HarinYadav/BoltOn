@@ -83,8 +83,7 @@ namespace BoltOn.Data.EF
 
 		protected virtual async Task SaveChangesAsync(TEntity entity, CancellationToken cancellationToken = default)
 		{
-			PublishEvents(entity);
-			await DbContext.SaveChangesAsync(cancellationToken);
+			await SaveChangesAsync(new List<TEntity> { entity }, cancellationToken);
 		}
 
 		protected virtual async Task SaveChangesAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
@@ -96,7 +95,7 @@ namespace BoltOn.Data.EF
 			await DbContext.SaveChangesAsync(cancellationToken);
 		}
 
-		private void PublishEvents(TEntity entity)
+		protected void PublishEvents(TEntity entity)
 		{
 			if (entity is BaseCqrsEntity baseCqrsEntity)
 			{
