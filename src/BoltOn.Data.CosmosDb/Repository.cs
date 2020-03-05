@@ -120,7 +120,8 @@ namespace BoltOn.Data.CosmosDb
 
         public virtual async Task<IEnumerable<TEntity>> AddAsync(IEnumerable<TEntity> entities, object options = null, CancellationToken cancellationToken = default)
         {
-            foreach (var entity in entities)
+            var tempEntities = entities.ToList();
+            foreach (var entity in tempEntities)
             {
                 PublishEvents(entity);
             }
@@ -130,7 +131,7 @@ namespace BoltOn.Data.CosmosDb
             else
                 await DocumentClient.CreateDocumentCollectionAsync(DocumentCollectionUri, entities as DocumentCollection);
 
-            return entities;
+            return tempEntities;
         }
 
         protected Uri GetDocumentUri(string id)
@@ -140,7 +141,7 @@ namespace BoltOn.Data.CosmosDb
 
         protected async Task<IEnumerable<TEntity>> GetResultsFromDocumentQuery(IDocumentQuery<TEntity> query, CancellationToken cancellationToken = default)
         {
-            List<TEntity> results = new List<TEntity>();
+            var results = new List<TEntity>();
             while (query.HasMoreResults)
             {
                 results.AddRange(await query.ExecuteNextAsync<TEntity>(cancellationToken));

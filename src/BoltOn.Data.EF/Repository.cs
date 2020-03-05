@@ -17,8 +17,8 @@ namespace BoltOn.Data.EF
 		private readonly EventBag _eventBag;
 		private readonly IBoltOnClock _boltOnClock;
 
-		private TDbContext DbContext { get; set; }
-		protected DbSet<TEntity> DbSets { get; private set; }
+		private TDbContext DbContext { get; }
+		protected DbSet<TEntity> DbSets { get; }
 
 		public Repository(IDbContextFactory dbContextFactory, EventBag eventBag,
 			IBoltOnClock boltOnClock)
@@ -41,8 +41,7 @@ namespace BoltOn.Data.EF
 			var query = DbSets.Where(predicate);
 			if (options is IEnumerable<Expression<Func<TEntity, object>>> includes && includes.Any())
 			{
-				query = includes.Aggregate(query,
-				(current, include) => current.Include(include));
+				query = includes.Aggregate(query, (current, include) => current.Include(include));
 			}
 
 			return await query.ToListAsync(cancellationToken);
@@ -76,9 +75,10 @@ namespace BoltOn.Data.EF
 
 		public virtual async Task<IEnumerable<TEntity>> AddAsync(IEnumerable<TEntity> entities, object options = null, CancellationToken cancellationToken = default)
 		{
-			await DbSets.AddRangeAsync(entities);
-			await SaveChangesAsync(entities, cancellationToken);
-			return entities;
+            var tempEntities = entities.ToList();
+            await DbSets.AddRangeAsync(tempEntities, cancellationToken);
+			await SaveChangesAsync(tempEntities, cancellationToken);
+			return tempEntities;
 		}
 
 		protected virtual async Task SaveChangesAsync(TEntity entity, CancellationToken cancellationToken = default)
