@@ -4,32 +4,31 @@ using BoltOn.Bootstrapping;
 using Microsoft.Extensions.DependencyInjection;
 using Pluralize.NET.Core;
 
-namespace BoltOn.Data.CosmosDb
+namespace BoltOn.Data.Elasticsearch
 {
     public static class Extensions
     {
         private static Pluralizer _pluralizer;
 
-        internal static string Pluralize(this string word)
+        public static string Pluralize(this string word)
         {
             _pluralizer ??= new Pluralizer();
             return _pluralizer.Pluralize(word);
         }
 
-        public static BoltOnOptions BoltOnCosmosDbModule(this BoltOnOptions boltOnOptions)
+        public static BoltOnOptions BoltOnElasticsearchModule(this BoltOnOptions boltOnOptions)
         {
             boltOnOptions.BoltOnAssemblies(Assembly.GetExecutingAssembly());
             return boltOnOptions;
         }
 
-		public static IServiceCollection AddCosmosDb<TCosmosDbOptions>(this IServiceCollection serviceCollection,
-			Action<BaseCosmosDbOptions> action)
-			where TCosmosDbOptions : BaseCosmosDbOptions, new()
+		public static IServiceCollection AddElasticsearch<TElasticsearchOptions>(this IServiceCollection serviceCollection,
+			Action<BaseElasticsearchOptions> action)
+			where TElasticsearchOptions : BaseElasticsearchOptions, new()
 		{
-			var options = new TCosmosDbOptions();
+			var options = new TElasticsearchOptions();
 			action(options);
 			serviceCollection.AddSingleton(options);
-
 			return serviceCollection;
 		}
 	}

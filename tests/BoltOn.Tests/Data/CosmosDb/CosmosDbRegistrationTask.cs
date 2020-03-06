@@ -31,7 +31,7 @@ namespace BoltOn.Tests.Data.CosmosDb
                 using var client = new DocumentClient(new Uri(cosmosDbOptions.Uri), cosmosDbOptions.AuthorizationKey);
                 client.CreateDatabaseIfNotExistsAsync(new Database { Id = cosmosDbOptions.DatabaseName }).GetAwaiter().GetResult();
 
-                var documentCollection = new DocumentCollection { Id = nameof(StudentFlattened).Pluralize() };
+                var documentCollection = new DocumentCollection { Id = "StudentFlattened" };
                 documentCollection.PartitionKey.Paths.Add("/studentTypeId");
                 client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(cosmosDbOptions.DatabaseName),
                     documentCollection).GetAwaiter().GetResult();
