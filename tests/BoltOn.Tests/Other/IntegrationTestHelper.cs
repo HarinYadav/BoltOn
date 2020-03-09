@@ -6,7 +6,9 @@ namespace BoltOn.Tests.Other
 		public static bool IsRabbitMqRunning { get; set; }
 		public static bool IsSqlServer { get; set; }
 		public static bool IsCosmosDbServer { get; set; }
+		public static bool IsElasticsearchServer { get; set; }
 		public static bool IsSeedData { get; set; }
 		public static bool IsSeedCosmosDbData { get; set; }
+		public static bool IsSeedElasticsearch { get; set; }
 	}
 }

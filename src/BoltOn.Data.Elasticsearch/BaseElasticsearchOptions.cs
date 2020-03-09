@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Nest;
 
 namespace BoltOn.Data.Elasticsearch
 {
-    public abstract class BaseElasticsearchOptions
+	public abstract class BaseElasticsearchOptions
     {
-        public Uri Uri { get; set; }
-    }
+		public ConnectionSettings ConnectionSettings { get; set; }
+	}
 }

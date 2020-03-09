@@ -18,8 +18,7 @@ namespace BoltOn.Data.Elasticsearch
 
         public Repository(TElasticsearchOptions elasticsearchOptions)
         {
-            var connectionSettings = new ConnectionSettings(elasticsearchOptions.Uri);
-            Client = new ElasticClient(connectionSettings);
+            Client = new ElasticClient(elasticsearchOptions.ConnectionSettings);
             IndexName = typeof(TEntity).Name.Pluralize().ToLower();
         }
 
